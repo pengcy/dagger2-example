@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -34,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     GitHubApiInterface mGitHubApiInterface;
 
+    TextView tvContent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        tvContent = (TextView) findViewById(R.id.tv_content);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Response<ArrayList<Repository>> response, Retrofit retrofit) {
                             if (response.isSuccess()) {
                                 Log.i("DEBUG", response.body().toString());
+                                tvContent.setText(response.body().toString());
                                 Snackbar.make(view,"Data retrieved", Snackbar.LENGTH_LONG)
                                         .setAction("Action",null).show();
                             } else {
